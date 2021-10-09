@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { TUser } from "../types/user";
 
 interface TUserContext {
@@ -11,10 +11,6 @@ export const UserContext = createContext<TUserContext | null>(null);
 
 const UserProvider: React.FC = ({ children }) => {
     const [user, setUser] = useState<TUser | null>(null);
-
-    // useEffect(() => {
-    //     console.log("current user : ", user);
-    // }, [user]);
 
     function set(user: TUser) {
         setUser(user);
