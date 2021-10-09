@@ -11,17 +11,26 @@ const chat = io.of("/chat");
 chat.on("connection", (socket) => {
     console.log("someone is connected");
 
-    socket.on("join", (room) => {
-        console.log("socket ", socket.id, " joined room ", room);
+    socket.on("join room", (room, user) => {
+        console.log("socket", socket.id, "joined room", room);
+
         socket.join(room);
+        socket.to(room).emit("user join room", user);
     });
 
-    socket.on("leave", (room) => {
+    socket.on("leave room", (room, user) => {
+        console.log("socket", socket.id, "left room", room);
+
         socket.leave(room);
+        socket.to(room).emit("user leave room", user);
     });
 
     socket.on("message", (msg, user) => {
         socket.to(room).emit("message", msg, user);
+    });
+
+    socket.on("typing", (room, user) => {
+        socket.to(room).emit("typing", user);
     });
 });
 
