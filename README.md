@@ -1,3 +1,3 @@
 # chat-app
 
-A simple chat app.
+frontend code for chat app
