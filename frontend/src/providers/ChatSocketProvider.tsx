@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { TMessage } from "../types/message";
 
 import { UserContext } from "./UserProvider";
 
@@ -51,8 +52,15 @@ const ChatSocketProvider: React.FC = ({ children }) => {
     }
 
     function sendMessage(room: string, message: string) {
-        if (hasConnection)
-            socket.emit("message", { room, user: userCtx?.current, message });
+        if (hasConnection && userCtx?.current) {
+            const newMessage: TMessage = {
+                author: userCtx?.current,
+                message: message,
+                timestamp: new Date(),
+            };
+
+            socket.emit("message", { roomId: room, message: newMessage });
+        }
     }
 
     function isTyping(room: string) {

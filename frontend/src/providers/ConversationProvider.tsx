@@ -1,25 +1,33 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { TRoom } from "../stores/rooms";
 import { TConversation, TMessage } from "../types/message";
-import { RoomContext } from "./RoomProvider";
+import { TSocketMessageData } from "../types/socket";
+import { ChatSocketContext } from "./ChatSocketProvider";
+import _ from "lodash";
 
 interface TConversationCtx {
-    convoList: TConversation[];
+    list: TConversation[];
     add: (room: TRoom, messages: TMessage[]) => void;
     addMessage: (roomId: string, message: TMessage) => void;
     init: (rooms: TRoom[]) => void;
     remove: (roomId: string) => void;
+    showList: () => TConversation[];
+    getConversation: (roomId: TRoom["id"]) => TConversation | undefined;
 }
 
 export const ConversationContext = createContext<TConversationCtx | null>(null);
 
 const ConversationProvider: React.FC = ({ children }) => {
-    const roomCtx = useContext(RoomContext);
+    const socket = useContext(ChatSocketContext);
     const [convoList, setConvoList] = useState<TConversation[]>([]);
+    const convoListRef = useRef<TConversation[] | null>(null);
+    convoListRef.current = convoList;
 
     useEffect(() => {
-        console.log("convolist", convoList);
-    }, [convoList]);
+        socket.on("message", (data: TSocketMessageData) => {
+            addMessage(data.roomId, data.message);
+        });
+    }, []);
 
     function init(rooms: TRoom[]) {
         const initConvo: TConversation[] = rooms.map((room) =>
@@ -31,8 +39,10 @@ const ConversationProvider: React.FC = ({ children }) => {
 
     function addMessage(roomId: string, message: TMessage) {
         setConvoList((prev) => {
-            const newList = [...prev];
-            const convoToUpdate = getConversation(roomId);
+            const newList = _.cloneDeep(prev);
+            const convoToUpdate = newList.find(
+                (room) => room.room.id === roomId
+            );
 
             if (!convoToUpdate) return prev;
 
@@ -41,10 +51,14 @@ const ConversationProvider: React.FC = ({ children }) => {
         });
     }
 
+    function showList() {
+        return convoList;
+    }
+
     function add(room: TRoom, messages: TMessage[] = []) {
         const newList = [...convoList];
-        setConvoList(newList);
         newList.push(createConversation(room, messages));
+        setConvoList(newList);
     }
 
     function remove(roomId: string) {
@@ -70,8 +84,11 @@ const ConversationProvider: React.FC = ({ children }) => {
         return convo;
     }
 
-    function getConversation(roomId: string): TConversation | undefined {
-        return convoList.find((convo) => convo.room.id === roomId);
+    function getConversation(roomId: string) {
+        if (convoListRef.current)
+            return convoListRef.current.find(
+                (convo) => convo.room.id === roomId
+            );
     }
 
     return (
@@ -79,9 +96,11 @@ const ConversationProvider: React.FC = ({ children }) => {
             value={{
                 add,
                 addMessage,
-                convoList,
+                list: convoList,
                 init,
                 remove,
+                showList,
+                getConversation,
             }}
         >
             {children}

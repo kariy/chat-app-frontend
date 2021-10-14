@@ -1,35 +1,22 @@
-import { useContext } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Login from "./features/login";
-import { UserContext } from "./providers/UserProvider";
-import RouterHandler from "./RouterHandler";
+import { BrowserRouter } from "react-router-dom";
+import styled from "styled-components";
+import MainRouter from "./MainRouter";
+import ContextProvider from "./providers";
+
+const Container = styled.div`
+    min-height: 500px;
+    height: 100vh;
+`;
 
 function App() {
-    const user = useContext(UserContext);
-
     return (
-        <Router>
-            <RouterHandler />
-            <Switch>
-                <Route path="/login">
-                    <Login />
-                </Route>
-
-                <Route path="/">
-                    <button
-                        onClick={() => {
-                            if (user && user.current) {
-                                console.log("logout");
-                                user.logout();
-                            }
-                        }}
-                    >
-                        log out
-                    </button>
-                    <div>home</div>
-                </Route>
-            </Switch>
-        </Router>
+        <Container>
+            <BrowserRouter>
+                <ContextProvider>
+                    <MainRouter />
+                </ContextProvider>
+            </BrowserRouter>
+        </Container>
     );
 }
 

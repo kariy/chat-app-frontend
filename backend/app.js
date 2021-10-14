@@ -25,12 +25,20 @@ chat.on("connection", (socket) => {
         socket.to(room).emit("user leave room", user);
     });
 
-    socket.on("message", (msg, user) => {
-        socket.to(room).emit("message", msg, user);
+    socket.on("message", (data) => {
+        chat.to(data.roomId).emit("message", data);
     });
 
-    socket.on("typing", (room, user) => {
+    socket.on("is typing", (room, user) => {
+        // console.log(user, "is typing");
         socket.to(room).emit("typing", user);
+    });
+
+    socket.on("not typing", (data) => {
+        const { room, user } = data;
+
+        // console.log(user, "not typing");
+        socket.to(room).emit("not typing", user);
     });
 });
 

@@ -1,12 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import AVAILABLE_ROOMS, { TRoom } from "../stores/rooms";
-import {
-    addToArrayWithEffect,
-    deleteInArrayWithEffect,
-    isArray,
-} from "../utils/array";
 import { ChatSocketMethodContext } from "./ChatSocketProvider";
-import { ConversationContext } from "./ConversationContext";
+import { ConversationContext } from "./ConversationProvider";
 
 type TRoomContext = {
     list: TRoom[];
@@ -29,9 +24,9 @@ const RoomProvider: React.FC = ({ children }) => {
     // State
     const [roomList, setRoomList] = useState<TRoom[]>([]);
 
-    useEffect(() => {
-        console.log("room list ", roomList);
-    }, [roomList]);
+    // useEffect(() => {
+    //     console.log("room list ", roomList);
+    // }, [roomList]);
 
     function init(ids: TRoom["id"][]) {
         const roomsAdded = addMany(ids);
@@ -114,10 +109,7 @@ const RoomProvider: React.FC = ({ children }) => {
     }
 
     function includes(id: TRoom["id"]) {
-        const idx = findIndexOf(id);
-        console.log(idx);
-
-        return idx !== -1 ? true : false;
+        return findIndexOf(id) !== -1 ? true : false;
     }
 
     function get(id: TRoom["id"]) {

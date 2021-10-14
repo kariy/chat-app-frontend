@@ -1,7 +1,7 @@
 import RoomProvider from "./RoomProvider";
 import ChatSocketProvider from "./ChatSocketProvider";
 import UserProvider from "./UserProvider";
-import ConversationProvider from "./ConversationContext";
+import ConversationProvider from "./ConversationProvider";
 
 const ContextProvider: React.FC = ({ children }) => {
     return (

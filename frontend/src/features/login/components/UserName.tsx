@@ -1,12 +1,39 @@
 import { ErrorMessage } from "@hookform/error-message";
-import React from "react";
 import {
     DeepMap,
     DeepPartial,
     FieldError,
     UseFormRegister,
 } from "react-hook-form/dist/types";
+import styled from "styled-components";
 import { TFormData } from "..";
+import ErrorText from "./ErrorText";
+import InputTitle from "./InputTitle";
+
+const Container = styled.div`
+    width: 100%;
+`;
+
+const Label = styled.label`
+    /* background-color: violet; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const Input = styled.input`
+    width: min(100%, 300px);
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: var(--system-rounded-lg);
+    border: 1px solid var(--system-color-light-grey);
+
+    &:focus {
+        outline: 3px solid var(--system-color-light-purple);
+    }
+`;
 
 interface Props {
     register: UseFormRegister<TFormData>;
@@ -15,9 +42,10 @@ interface Props {
 
 export default function UserName({ register, errors }: Props) {
     return (
-        <div>
-            <label>
-                <input
+        <Container>
+            <Label>
+                <InputTitle>Enter your name</InputTitle>
+                <Input
                     type="text"
                     {...register("name", {
                         required: "Your name cannot be empty!",
@@ -31,8 +59,10 @@ export default function UserName({ register, errors }: Props) {
                         },
                     })}
                 />
-            </label>
-            <ErrorMessage name="name" errors={errors} />
-        </div>
+            </Label>
+            <ErrorText>
+                <ErrorMessage name="name" errors={errors} />
+            </ErrorText>
+        </Container>
     );
 }

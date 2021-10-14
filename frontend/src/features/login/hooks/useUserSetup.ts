@@ -12,6 +12,7 @@ type SetupState = {
     color: string | null;
     rooms: string[];
     currentPhase: SetupPhase;
+    isComplete: boolean;
 };
 
 const initState: SetupState = {
@@ -19,6 +20,7 @@ const initState: SetupState = {
     color: null,
     rooms: [],
     currentPhase: "name",
+    isComplete: false,
 };
 
 const reducer: React.Reducer<SetupState, SetupAction> = (
@@ -45,7 +47,12 @@ const reducer: React.Reducer<SetupState, SetupAction> = (
 
             action.rooms.forEach((room) => newRooms.push(room));
 
-            return { ...state, rooms: newRooms, currentPhase: "complete" };
+            return {
+                ...state,
+                rooms: newRooms,
+                currentPhase: "complete",
+                isComplete: true,
+            };
         }
         default:
             return { ...state };
