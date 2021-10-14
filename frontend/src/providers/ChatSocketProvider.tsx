@@ -12,7 +12,15 @@ interface IChatMethodCtx {
     notTyping: (room: string) => void;
 }
 
-const socket = io("http://localhost:8000/chat", {
+const uri = `${
+    process.env.NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_SOCKET_URI
+        : process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_PROD_SOCKET_URI
+        : ""
+}`;
+
+const socket = io(uri, {
     autoConnect: false,
     reconnection: true,
 });
