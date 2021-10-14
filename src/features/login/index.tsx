@@ -84,7 +84,7 @@ export default function Login() {
             roomCtx?.init(rooms);
             history.push("/");
         }
-    }, [state.isComplete]);
+    }, [state, userCtx, roomCtx, history]);
 
     function handleContinue(data: any) {
         if (state.currentPhase === "name")

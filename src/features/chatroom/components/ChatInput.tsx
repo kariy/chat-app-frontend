@@ -46,7 +46,7 @@ export default function ChatInput({ roomId }: Props) {
 
         if (isTyping) chatSocketCtx?.isTyping(roomId);
         else chatSocketCtx?.notTyping(roomId);
-    }, [isTyping]);
+    }, [isTyping, chatSocketCtx, roomId]);
 
     const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setIsTyping(() => (e.target.value ? true : false));

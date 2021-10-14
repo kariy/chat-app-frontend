@@ -27,7 +27,7 @@ const ConversationProvider: React.FC = ({ children }) => {
         socket.on("message", (data: TSocketMessageData) => {
             addMessage(data.roomId, data.message);
         });
-    }, []);
+    }, [socket]);
 
     function init(rooms: TRoom[]) {
         const initConvo: TConversation[] = rooms.map((room) =>

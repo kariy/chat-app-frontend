@@ -6,7 +6,7 @@ export default function RouterHandler() {
 
     useEffect(() => {
         history.push("/login");
-    }, []);
+    }, [history]);
 
     return <></>;
 }
