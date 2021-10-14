@@ -12,15 +12,15 @@ interface IChatMethodCtx {
     notTyping: (room: string) => void;
 }
 
-const uri = `${
-    process.env.NODE_ENV === "development"
-        ? process.env.REACT_APP_DEV_SOCKET_URI
-        : process.env.NODE_ENV === "production"
-        ? process.env.REACT_APP_PROD_SOCKET_URI
-        : ""
-}`;
+// const uri = `${
+//     process.env.NODE_ENV === "development"
+//         ? process.env.REACT_APP_DEV_SOCKET_URI
+//         : process.env.NODE_ENV === "production"
+//         ? process.env.REACT_APP_PROD_SOCKET_URI
+//         : ""
+// }`;
 
-const socket = io(uri, {
+const socket = io(`https://ammarif-chat-app-backend.herokuapp.com/chat`, {
     autoConnect: false,
     reconnection: true,
 });
