@@ -4,9 +4,9 @@ export type TRoom = {
 };
 
 const AVAILABLE_ROOMS = [
-    { id: "DwU1HrLX4o", name: "Blockchain" },
-    { id: "wEz0DFNAvu", name: "KICT" },
-    { id: "S8L6cOewB8", name: "Music" },
+    { id: "DwU1HrLX4o", name: "Rumah" },
+    { id: "wEz0DFNAvu", name: "Sekolah" },
+    { id: "S8L6cOewB8", name: "Universiti" },
 ];
 
 export default AVAILABLE_ROOMS;
