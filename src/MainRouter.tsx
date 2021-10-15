@@ -1,16 +1,16 @@
 import { Route, Switch } from "react-router-dom";
+import PrivateRoute from "./auth/PrivateRoute";
+import FallbackPage from "./components/Fallback";
 import Home from "./features/home";
 import Login from "./features/login";
-import RouterHandler from "./RouterHandler";
 
 export default function MainRouter() {
     return (
         <>
-            <RouterHandler />
             <Switch>
-                <Route path="/" exact component={Home} />
-
+                <PrivateRoute exact path="/" component={Home} />
                 <Route path="/login" component={Login} />
+                <Route component={FallbackPage} />
             </Switch>
         </>
     );
